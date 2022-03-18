@@ -21,14 +21,20 @@ MonoBehaviour:
     m_Address: Mace1H_Basic_Def
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 11400000, guid: 6507968fbbc12184ea2e776321ba10dd, type: 2}
-    m_TargetAsset: {fileID: 11400000, guid: 6507968fbbc12184ea2e776321ba10dd, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: ba9640ff256df6b40aa242dcd055974a
     m_Address: Bow_Medium_Def
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 11400000, guid: ba9640ff256df6b40aa242dcd055974a, type: 2}
-    m_TargetAsset: {fileID: 11400000, guid: ba9640ff256df6b40aa242dcd055974a, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6a6a74b3b226c6b46b15377e14043ff9
+    m_Address: Bow_Epic_Def
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 11400000, guid: 6a6a74b3b226c6b46b15377e14043ff9, type: 2}
+    m_TargetAsset: {fileID: 11400000, guid: 6a6a74b3b226c6b46b15377e14043ff9, type: 2}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 42a82217ceccbdd41860460d99878a4d, type: 2}
   m_SchemaSet:
