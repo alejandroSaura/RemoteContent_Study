@@ -17,5 +17,5 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
   goldPrice: 100
-  gemsPrice: 5
+  gemsPrice: 7
   minLevel: 20
