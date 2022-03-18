@@ -52,18 +52,16 @@ public class GameManager : MonoBehaviour
 
     public void DeleteAllCachedData()
     {
-        DeleteCachedcatalog(m_mainRemoteContentCatalogAddress);
-        DeleteCachedcatalog(m_secondaryRemoteContentCatalogAddress);
+        DeleteCacheFolder();
         UnityEngine.Caching.ClearCache();
     }
 
-    void DeleteCachedcatalog(string catalogAddress)
+    void DeleteCacheFolder()
     {
-        int lastIndexOfSeparator = catalogAddress.LastIndexOf('/') + 1;
-        string catalogFilePath = Application.persistentDataPath + "/com.unity.addressables/" + catalogAddress.Substring(lastIndexOfSeparator, catalogAddress.Length - lastIndexOfSeparator);
-        if (File.Exists(catalogFilePath))
+        string catalogPath = Application.persistentDataPath + "/com.unity.addressables";
+        if (Directory.Exists(catalogPath))
         {
-            File.Delete(catalogFilePath);
+            Directory.Delete(catalogPath);
         }
     }
 

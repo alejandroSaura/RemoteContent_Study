@@ -197,7 +197,10 @@ public class AddressablesBuildWindow : EditorWindow
         string addressablesLibraryFolderAbsolute = projectRootPath + "/Library/com.unity.addressables";
         string addressablesLibraryFolderAbsoluteTemp = projectRootPath + "/Library/com.unity.addressables_temp";
 
-        Directory.Move(addressablesLibraryFolderAbsolute, addressablesLibraryFolderAbsoluteTemp);
+        if(Directory.Exists(addressablesLibraryFolderAbsolute))
+        {
+            Directory.Move(addressablesLibraryFolderAbsolute, addressablesLibraryFolderAbsoluteTemp);
+        }        
     }
 
     private static void RestorePreviousAddressablesLibraryFolder()
@@ -208,7 +211,11 @@ public class AddressablesBuildWindow : EditorWindow
         string addressablesLibraryFolderAbsoluteTemp = projectRootPath + "/Library/com.unity.addressables_temp";
 
         FileUtil.DeleteFileOrDirectory(addressablesLibraryFolderAbsolute);
-        Directory.Move(addressablesLibraryFolderAbsoluteTemp, addressablesLibraryFolderAbsolute);
+
+        if (Directory.Exists(addressablesLibraryFolderAbsoluteTemp))
+        {
+            Directory.Move(addressablesLibraryFolderAbsoluteTemp, addressablesLibraryFolderAbsolute);
+        }
     }
 
     private static Dictionary<AddressableAssetGroup, bool> SaveGroupsIncludedState()
