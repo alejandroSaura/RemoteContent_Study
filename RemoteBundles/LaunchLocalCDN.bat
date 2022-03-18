@@ -1,0 +1,1 @@
+.\miniserve-v0.17.0-x86_64-pc-windows-msvc.exe -v

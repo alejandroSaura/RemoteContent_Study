@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: WeaponPrefabs_Remote
+  m_EditorClassIdentifier: 
+  m_GroupName: WeaponPrefabs_Remote
+  m_Data:
+    m_SerializedData: []
+  m_GUID: a089d735fbb0263429edad3231ce547c
+  m_SerializeEntries:
+  - m_GUID: eb9de1f4d4eb0974587915740c2394ba
+    m_Address: Mace1H_Basic_Prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 8902285711860161467, guid: eb9de1f4d4eb0974587915740c2394ba, type: 3}
+    m_TargetAsset: {fileID: 8902285711860161467, guid: eb9de1f4d4eb0974587915740c2394ba, type: 3}
+  - m_GUID: 7430d4cc5972f7645b8b1252559be75f
+    m_Address: Bow_Medium_Prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 4546535743868945674, guid: 7430d4cc5972f7645b8b1252559be75f, type: 3}
+    m_TargetAsset: {fileID: 4546535743868945674, guid: 7430d4cc5972f7645b8b1252559be75f, type: 3}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 42a82217ceccbdd41860460d99878a4d, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1cbb04eb5d18c9d46a3450b7037da635, type: 2}
+    - {fileID: 11400000, guid: ad09896593f88ef4fb5d8e14b38b9d42, type: 2}
+    - {fileID: 11400000, guid: e762979cce294ec46baa1a66bea24470, type: 2}
