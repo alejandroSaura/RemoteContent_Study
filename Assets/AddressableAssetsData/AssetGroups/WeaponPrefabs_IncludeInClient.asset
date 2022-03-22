@@ -21,8 +21,6 @@ MonoBehaviour:
     m_Address: Bow_Basic_Prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 6941268174503772695, guid: f00ccada7f0331a43859fb2ed3be739f, type: 3}
-    m_TargetAsset: {fileID: 6941268174503772695, guid: f00ccada7f0331a43859fb2ed3be739f, type: 3}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 42a82217ceccbdd41860460d99878a4d, type: 2}
   m_SchemaSet:

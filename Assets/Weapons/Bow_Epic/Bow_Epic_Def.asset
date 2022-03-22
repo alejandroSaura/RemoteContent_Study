@@ -16,6 +16,7 @@ MonoBehaviour:
     m_AssetGUID: d683417b022dca543a2e2fb8c0c11908
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   goldPrice: 200
   gemsPrice: 10
   minLevel: 50

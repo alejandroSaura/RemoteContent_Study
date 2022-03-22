@@ -17,21 +17,31 @@ MonoBehaviour:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 1
+  m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
+  m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 1
   m_IgnoreUnsupportedFilesInBuild: 0
   m_UniqueBundleIds: 0
+  m_NonRecursiveBuilding: 1
   m_maxConcurrentWebRequests: 500
   m_ContiguousBundles: 1
+  m_StripUnityVersionFromBundleBuild: 1
+  m_DisableVisibleSubAssetRepresentations: 0
+  m_ShaderBundleNaming: 1
+  m_ShaderBundleCustomNaming: 
+  m_MonoScriptBundleNaming: 0
+  m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
     m_Id: e83b649bd59924742bc765a8f1b8ee9b
   m_RemoteCatalogLoadPath:
     m_Id: 6070c3abeb9c70d4f8219208a928f3a9
-  m_overridePlayerVersion: remote_[BuildVars.DeploymentEnvironment]_[BuildVars.ContentType]
+  m_ContentStateBuildPath: 
+  m_overridePlayerVersion: remote_[ContentUpdating.BuildVars.DeploymentEnvironment]_[ContentUpdating.BuildVars.ContentType]
   m_GroupAssets:
   - {fileID: 11400000, guid: 7901d9ceae1c2f041b6f645f6099b705, type: 2}
   - {fileID: 11400000, guid: 512251c1a553e434eb09f85d1945f6e5, type: 2}
+  - {fileID: 11400000, guid: 6c863758049cf8a429dcd24565080a5c, type: 2}
   - {fileID: 11400000, guid: 9cd7a7f47a156dc42b2c0eef6e9d93d0, type: 2}
   - {fileID: 11400000, guid: 5200cd15604040840b6cbaddcf890c2f, type: 2}
   - {fileID: 11400000, guid: 77684f25e0e5c6e4da9a4ff796434697, type: 2}
@@ -70,9 +80,9 @@ MonoBehaviour:
       - m_Id: 4d4b4caf5ff227641910e709c641addf
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: e83b649bd59924742bc765a8f1b8ee9b
-        m_Value: RemoteBundles/[BuildVars.DeploymentEnvironment]/[BuildVars.Platform]/Main
+        m_Value: RemoteBundles/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]/Main
       - m_Id: 6070c3abeb9c70d4f8219208a928f3a9
-        m_Value: http://localhost:8080/[BuildVars.DeploymentEnvironment]/[BuildVars.Platform]/Main
+        m_Value: http://localhost:8080/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]/Main
     - m_InheritedParent: 
       m_Id: 7e8a8b7160f14d84db917277cf3628b7
       m_ProfileName: SecondaryContent
@@ -84,9 +94,9 @@ MonoBehaviour:
       - m_Id: 4d4b4caf5ff227641910e709c641addf
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: e83b649bd59924742bc765a8f1b8ee9b
-        m_Value: RemoteBundles/[BuildVars.DeploymentEnvironment]/[BuildVars.Platform]/Secondary
+        m_Value: RemoteBundles/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]/Secondary
       - m_Id: 6070c3abeb9c70d4f8219208a928f3a9
-        m_Value: http://localhost:8080/[BuildVars.DeploymentEnvironment]/[BuildVars.Platform]/Secondary
+        m_Value: http://localhost:8080/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]/Secondary
     m_ProfileEntryNames:
     - m_Id: 4df11b68cfc38fa4c8612deebe54ae3f
       m_Name: BuildTarget
@@ -121,7 +131,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 88739081dbcdb9445b8a19757196e450, type: 2}
   - {fileID: 11400000, guid: 2ac839f24903d724f9a696f0cf837ad2, type: 2}
   - {fileID: 11400000, guid: 9ee75a19c18c9444781140b05d1faf00, type: 2}
-  m_ActiveProfileId: 7e8a8b7160f14d84db917277cf3628b7
+  m_ActiveProfileId: fe768743813377042a47f48ddd09e30a
   m_HostingServicesManager:
     m_HostingServiceInfos: []
     m_Settings: {fileID: 11400000}

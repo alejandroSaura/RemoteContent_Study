@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class WeaponVisual : MonoBehaviour
 {
-    [SerializeField] string m_testString = "ajkhfadjfh";
+    [SerializeField] string m_testString = "This string is a field that can change in this gameobject's custom script";
 
     void Start()
     {
         Debug.Log(m_testString);
-    }
-
-    void Update()
-    {
-        
     }
 }

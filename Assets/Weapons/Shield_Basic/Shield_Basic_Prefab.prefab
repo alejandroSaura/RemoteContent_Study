@@ -102,6 +102,7 @@ MonoBehaviour:
     m_SubObjectName: Shield1H
     m_SubObjectType: UnityEngine.Mesh, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+    m_EditorAssetChanged: 0
 --- !u!114 &598586578238822154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,3 +120,4 @@ MonoBehaviour:
     m_AssetGUID: 6a58d7e89b2d56a4d8ca87eda48591e1
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0

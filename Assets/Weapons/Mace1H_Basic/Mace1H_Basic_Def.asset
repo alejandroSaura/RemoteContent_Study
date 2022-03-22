@@ -16,6 +16,7 @@ MonoBehaviour:
     m_AssetGUID: eb9de1f4d4eb0974587915740c2394ba
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   goldPrice: 0
   gemsPrice: 0
   minLevel: 0

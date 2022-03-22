@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6941268174503772695}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: -6665426260531058033, guid: 7d58dd8d9be70844ea75845156e4179d, type: 3}
 --- !u!23 &8886915779042878402
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: c09f54a65900b6a4e8df2c52e369272a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7a21294d1d4b044b8e72713d6519efd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_testString: ajkhfadjfh
 --- !u!114 &2890289444827320714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +116,7 @@ MonoBehaviour:
     m_SubObjectName: Bow2h
     m_SubObjectType: UnityEngine.Mesh, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+    m_EditorAssetChanged: 0
 --- !u!114 &4343954574497835306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,3 +134,4 @@ MonoBehaviour:
     m_AssetGUID: c09f54a65900b6a4e8df2c52e369272a
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0

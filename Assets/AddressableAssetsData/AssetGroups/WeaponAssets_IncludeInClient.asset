@@ -21,14 +21,10 @@ MonoBehaviour:
     m_Address: Bow_Basic_Material
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 2100000, guid: c09f54a65900b6a4e8df2c52e369272a, type: 2}
-    m_TargetAsset: {fileID: 2100000, guid: c09f54a65900b6a4e8df2c52e369272a, type: 2}
   - m_GUID: 7d58dd8d9be70844ea75845156e4179d
     m_Address: Bow_Mesh
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 919132149155446097, guid: 7d58dd8d9be70844ea75845156e4179d, type: 3}
-    m_TargetAsset: {fileID: 919132149155446097, guid: 7d58dd8d9be70844ea75845156e4179d, type: 3}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 42a82217ceccbdd41860460d99878a4d, type: 2}
   m_SchemaSet:
