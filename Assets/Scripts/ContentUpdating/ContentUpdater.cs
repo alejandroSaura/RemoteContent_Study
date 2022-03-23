@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
+using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using static UnityEngine.AddressableAssets.Addressables;
@@ -14,6 +15,8 @@ namespace ContentUpdating
 {
     public class ContentUpdater
     {
+        string kCacheDataFolder = Application.persistentDataPath + "/com.unity.addressables";
+
         string m_remoteContentCatalogAddress = "http://localhost:8080/Dev/Windows/catalog_remote_Dev.json";
 
         bool m_remoteCatalogLoaded;
@@ -34,7 +37,7 @@ namespace ContentUpdating
 
         async Task LoadRemoteContentCatalog(string catalogAddress)
         {
-            AsyncOperationHandle contentCatalogLoad_op = Addressables.LoadContentCatalogAsync(catalogAddress);
+            AsyncOperationHandle contentCatalogLoad_op = Addressables.LoadContentCatalogAsync(catalogAddress); // This doesn't cache the catalog for some obscure and hidden reason
             await contentCatalogLoad_op.Task;
             Debug.Assert(contentCatalogLoad_op.Status == AsyncOperationStatus.Succeeded);
 
@@ -102,15 +105,15 @@ namespace ContentUpdating
             }
 
             return m_DownloadDependencies_Op.PercentComplete;
-        }        
+        }
 
         async Task UpdateRemoteContentCatalog()
-        {  
+        {
             Debug.Log($"Updating Remote Catalogs...");
 
             List<string> catalogsToUpdate = new List<string>();
 
-            AsyncOperationHandle<List<string>> CheckForCatalogUpdates_Op = Addressables.CheckForCatalogUpdates(false);
+            AsyncOperationHandle<List<string>> CheckForCatalogUpdates_Op = Addressables.CheckForCatalogUpdates(false); // This caches the catalog
             await CheckForCatalogUpdates_Op.Task;
 
             if (!CheckForCatalogUpdates_Op.IsValid())
@@ -229,21 +232,19 @@ namespace ContentUpdating
 
         void DeleteCacheFolder()
         {
-            string catalogPath = Application.persistentDataPath + "/com.unity.addressables";
-
-            if (!Directory.Exists(catalogPath))
+            if (!Directory.Exists(kCacheDataFolder))
             {
                 return;
             }
 
-            string[] files = Directory.GetFiles(catalogPath);
+            string[] files = Directory.GetFiles(kCacheDataFolder);
             foreach (string file in files)
             {
                 File.SetAttributes(file, FileAttributes.Normal);
                 File.Delete(file);
             }
 
-            Directory.Delete(catalogPath, false);
+            Directory.Delete(kCacheDataFolder, false);
         }
     }
 }

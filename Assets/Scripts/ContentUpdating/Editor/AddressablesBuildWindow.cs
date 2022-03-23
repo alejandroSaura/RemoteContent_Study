@@ -108,6 +108,8 @@ namespace ContentUpdating
             StripMaterialsAndMeshesFromPrefabs();
             await Task.Yield();
 
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            settings.BuildRemoteCatalog = true;
             Build();
 
             RestoreMaterialsAndMeshesFromPrefabs();
