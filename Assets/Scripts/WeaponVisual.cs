@@ -10,4 +10,9 @@ public class WeaponVisual : MonoBehaviour
     {
         Debug.Log(m_testString);
     }
+
+    private void OnDestroy()
+    {
+        Debug.Log("Visual destroyed");
+    }
 }
