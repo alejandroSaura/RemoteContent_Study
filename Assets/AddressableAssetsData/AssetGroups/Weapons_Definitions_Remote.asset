@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 34b37a978929b58468c41001c0f454c2
   m_SerializeEntries:
+  - m_GUID: 6507968fbbc12184ea2e776321ba10dd
+    m_Address: Mace1H_Basic_Def
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponDefinitions
   - m_GUID: ba9640ff256df6b40aa242dcd055974a
     m_Address: Bow_Medium_Def
     m_ReadOnly: 0
@@ -24,6 +29,11 @@ MonoBehaviour:
     - WeaponDefinitions
   - m_GUID: 6a6a74b3b226c6b46b15377e14043ff9
     m_Address: Bow_Epic_Def
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponDefinitions
+  - m_GUID: 2717ffff591ef814582bf10bfee0f9e9
+    m_Address: Shield_Basic_Def
     m_ReadOnly: 0
     m_SerializedLabels:
     - WeaponDefinitions
