@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Shield_Basic_Def
   m_EditorClassIdentifier: 
   prefab:
-    m_AssetGUID: 6a58d7e89b2d56a4d8ca87eda48591e1
+    m_AssetGUID: a71d1f9b3c3dfdf4f8190625852fd277
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   goldPrice: 100
   gemsPrice: 10
   minLevel: 2
