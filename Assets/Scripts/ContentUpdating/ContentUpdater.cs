@@ -14,29 +14,42 @@ namespace ContentUpdating
 {
     public class ContentUpdater
     {
-        string m_mainRemoteContentCatalogAddress = "http://localhost:8080/Dev/Windows/Main/catalog_remote_Dev_main.json";
-        string m_secondaryRemoteContentCatalogAddress = "http://localhost:8080/Dev/Windows/Secondary/catalog_remote_Dev_secondary.json";
+        string m_remoteContentCatalogAddress = "http://localhost:8080/Dev/Windows/catalog_remote_Dev.json";
 
-        bool m_remoteCatalogsLoaded;
+        bool m_remoteCatalogLoaded;
 
         AsyncOperationHandle m_DownloadDependencies_Op;
 
-        public ContentUpdater(string mainRemoteContentCatalogAddress, string secondaryRemoteContentCatalogAddress)
+        public ContentUpdater(string remoteContentCatalogAddress)
         {
-            m_mainRemoteContentCatalogAddress = mainRemoteContentCatalogAddress;
-            m_secondaryRemoteContentCatalogAddress = secondaryRemoteContentCatalogAddress;
-            m_remoteCatalogsLoaded = false;
+            m_remoteContentCatalogAddress = remoteContentCatalogAddress;
+            m_remoteCatalogLoaded = false;
+        }
+
+        public async Task LoadRemoteContentCatalog()
+        {
+            await LoadRemoteContentCatalog(m_remoteContentCatalogAddress);
+            m_remoteCatalogLoaded = true;
+        }
+
+        async Task LoadRemoteContentCatalog(string catalogAddress)
+        {
+            AsyncOperationHandle contentCatalogLoad_op = Addressables.LoadContentCatalogAsync(catalogAddress);
+            await contentCatalogLoad_op.Task;
+            Debug.Assert(contentCatalogLoad_op.Status == AsyncOperationStatus.Succeeded);
+
+            Addressables.Release(contentCatalogLoad_op);
         }
 
         public async Task<ContentUpdateInfo> CheckRemoteContentUpdate()
         {
             try
             {
-                if (!m_remoteCatalogsLoaded)
+                if (!m_remoteCatalogLoaded)
                 {
-                    await LoadRemoteContentCatalogs();
+                    throw new Exception("Load the remote catalog before checking for updates");
                 }
-                await UpdateRemoteContentCatalogs();
+                await UpdateRemoteContentCatalog();
                 ContentUpdateInfo contentUpdateInfo = await GetContentUpdateInfo();
                 return contentUpdateInfo;
             }
@@ -89,24 +102,9 @@ namespace ContentUpdating
             }
 
             return m_DownloadDependencies_Op.PercentComplete;
-        }
+        }        
 
-        async Task LoadRemoteContentCatalogs()
-        {
-            await LoadRemoteContentCatalog(m_secondaryRemoteContentCatalogAddress);
-            await LoadRemoteContentCatalog(m_mainRemoteContentCatalogAddress);
-            m_remoteCatalogsLoaded = true;
-        }
-
-        async Task LoadRemoteContentCatalog(string catalogAddress)
-        {
-            AsyncOperationHandle contentCatalogLoad_op = Addressables.LoadContentCatalogAsync(catalogAddress);
-            await contentCatalogLoad_op.Task;
-            Debug.Assert(contentCatalogLoad_op.Status == AsyncOperationStatus.Succeeded);
-            Addressables.Release(contentCatalogLoad_op);
-        }
-
-        async Task UpdateRemoteContentCatalogs()
+        async Task UpdateRemoteContentCatalog()
         {  
             Debug.Log($"Updating Remote Catalogs...");
 

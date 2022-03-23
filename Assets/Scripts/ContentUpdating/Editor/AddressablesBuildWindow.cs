@@ -20,6 +20,11 @@ namespace ContentUpdating
             REMOTE
         }
 
+        static string m_deploymentEnvironment = "Dev";
+
+        static string m_localCDNProfileName = "LocalCDN";
+        static string m_remoteCDNProfileName = "RemoteCDN";
+
         [MenuItem("Tools/Addressables Build")]
         public static void ShowWindow()
         {
@@ -28,35 +33,35 @@ namespace ContentUpdating
 
         void OnGUI()
         {
-            if (GUILayout.Button("Build local groups only"))
+            if (GUILayout.Button("Build local content"))
             {
                 BuildLocalGroupsOnly();
             }
 
-            if (GUILayout.Button("Build remote main content"))
+            if (GUILayout.Button("Build remote content (Local CDN)"))
             {
-                BuildRemoteMainContent(new Version(Application.version));
+                BuildRemoteMainContent(m_localCDNProfileName);
             }
 
-            if (GUILayout.Button("Build remote secondary content"))
+            if (GUILayout.Button("Build remote content (Remote CDN)"))
             {
-                BuildRemoteSecondaryContent(new Version(Application.version));
+                BuildRemoteMainContent(m_remoteCDNProfileName);
             }
 
-            if (GUILayout.Button("Build all groups forced as local"))
+            if (GUILayout.Button("Build all groups forced as local (for local debug builds)"))
             {
-                //BuildMainContent();
+                BuildAllGroupsForcedAslocal();
             }
 
-            if (GUILayout.Button("Build server flagged groups forced as local"))
+            if (GUILayout.Button("Build server flagged groups forced as local (for server builds)"))
             {
-                //BuildMainContent();
+                BuildServerGroups();
             }
         }
 
         public async static void BuildLocalGroupsOnly()
         {
-            BuildVars.DeploymentEnvironment = "Dev";
+            BuildVars.DeploymentEnvironment = m_deploymentEnvironment;
             BuildVars.Platform = PlatformMappingService.GetPlatform().ToString();
 
             bool setProfileSuccess = SetProfile("Default");
@@ -79,15 +84,14 @@ namespace ContentUpdating
             RestoreGroupsIncludedState(groupsIncludedState);
         }
 
-        public async static void BuildRemoteMainContent(Version version)
+        public async static void BuildRemoteMainContent(string profileName)
         {
             SaveCurrentAddressablesLibraryFolder();
 
-            BuildVars.DeploymentEnvironment = "Dev";
-            BuildVars.ContentType = "main";
+            BuildVars.DeploymentEnvironment = m_deploymentEnvironment;
             BuildVars.Platform = PlatformMappingService.GetPlatform().ToString();
 
-            bool setProfileSuccess = SetProfile("MainContent");
+            bool setProfileSuccess = SetProfile(profileName);
             if (!setProfileSuccess)
             {
                 return;
@@ -95,7 +99,7 @@ namespace ContentUpdating
 
             Dictionary<AddressableAssetGroup, bool> groupsIncludedState = SaveGroupsIncludedState();
 
-            GroupFilter groupFilter = new GroupFilter() { buildPath = AddressableAssetSettings.kRemoteBuildPath, contentType = ContentTypeGroupSchema.ContentType.Main };
+            GroupFilter groupFilter = new GroupFilter() { buildPath = AddressableAssetSettings.kRemoteBuildPath };
             List<AddressableAssetGroup> groupsToBuild = GetFilteredGroups(groupFilter);
             SetGroupsIncludedState(groupsToBuild);
 
@@ -117,37 +121,14 @@ namespace ContentUpdating
             RestorePreviousAddressablesLibraryFolder();
         }
 
-        public async static void BuildRemoteSecondaryContent(Version version)
+        private void BuildServerGroups()
         {
-            SaveCurrentAddressablesLibraryFolder();
+            throw new NotImplementedException();
+        }
 
-            BuildVars.DeploymentEnvironment = "Dev";
-            BuildVars.ContentType = "secondary";
-            BuildVars.Platform = PlatformMappingService.GetPlatform().ToString();
-
-            bool setProfileSuccess = SetProfile("SecondaryContent");
-            if (!setProfileSuccess)
-            {
-                return;
-            }
-
-            Dictionary<AddressableAssetGroup, bool> groupsIncludedState = SaveGroupsIncludedState();
-
-            GroupFilter groupFilter = new GroupFilter() { buildPath = AddressableAssetSettings.kRemoteBuildPath, contentType = ContentTypeGroupSchema.ContentType.Secondary };
-            List<AddressableAssetGroup> groupsToBuild = GetFilteredGroups(groupFilter);
-            SetGroupsIncludedState(groupsToBuild);
-
-            DeleteRemoteTargetFolder();
-
-            Build();
-
-            RestoreGroupsIncludedState(groupsIncludedState);
-            AssetDatabase.Refresh();
-
-            DeleteAddressablesLibraryFolder();
-            UnityEngine.Caching.ClearCache();
-
-            RestorePreviousAddressablesLibraryFolder();
+        private void BuildAllGroupsForcedAslocal()
+        {
+            throw new NotImplementedException();
         }
 
         static void Build()
@@ -278,7 +259,6 @@ namespace ContentUpdating
         class GroupFilter
         {
             public string buildPath = "";
-            public ContentTypeGroupSchema.ContentType? contentType = null;
             public bool? includeInServer = null;
         }
 
@@ -289,7 +269,6 @@ namespace ContentUpdating
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
             foreach (AddressableAssetGroup group in settings.groups)
             {
-                ContentTypeGroupSchema contentTypeGroupSchema = group.GetSchema<ContentTypeGroupSchema>();
                 BundledAssetGroupSchema bundledAssetGroupSchema = group.GetSchema<BundledAssetGroupSchema>();
                 IncludeInServerGroupSchema includeInServerGroupSchema = group.GetSchema<IncludeInServerGroupSchema>();
 
@@ -302,13 +281,6 @@ namespace ContentUpdating
 
                     string v = bundledAssetGroupSchema.BuildPath.GetName(settings);
                     if (bundledAssetGroupSchema.BuildPath.GetName(settings) != filter.buildPath)
-                    {
-                        continue;
-                    }
-                }
-                if (filter.contentType != null)
-                {
-                    if (contentTypeGroupSchema == null || contentTypeGroupSchema.contentType != filter.contentType.Value)
                     {
                         continue;
                     }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: WeaponPrefabs_Remote
+  m_Name: Weapons_Prefabs_Remote
   m_EditorClassIdentifier: 
-  m_GroupName: WeaponPrefabs_Remote
+  m_GroupName: Weapons_Prefabs_Remote
   m_Data:
     m_SerializedData: []
   m_GUID: a089d735fbb0263429edad3231ce547c
@@ -35,4 +35,3 @@ MonoBehaviour:
     m_Schemas:
     - {fileID: 11400000, guid: 1cbb04eb5d18c9d46a3450b7037da635, type: 2}
     - {fileID: 11400000, guid: ad09896593f88ef4fb5d8e14b38b9d42, type: 2}
-    - {fileID: 11400000, guid: e762979cce294ec46baa1a66bea24470, type: 2}

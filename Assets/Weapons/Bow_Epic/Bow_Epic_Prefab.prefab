@@ -22,7 +22,7 @@ PrefabInstance:
     - target: {fileID: 6678941159181178632, guid: f00ccada7f0331a43859fb2ed3be739f, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -6665426260531058033, guid: 7d58dd8d9be70844ea75845156e4179d, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6941268174503772695, guid: f00ccada7f0331a43859fb2ed3be739f, type: 3}
       propertyPath: m_Name
       value: Bow_Epic_Prefab
@@ -74,6 +74,6 @@ PrefabInstance:
     - target: {fileID: 8886915779042878402, guid: f00ccada7f0331a43859fb2ed3be739f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 1ee4688279d442648af0e658d7bb0cb8, type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f00ccada7f0331a43859fb2ed3be739f, type: 3}

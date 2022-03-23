@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: WeaponAssets_Remote
+  m_Name: Weapons_Assets_Remote
   m_EditorClassIdentifier: 
-  m_GroupName: WeaponAssets_Remote
+  m_GroupName: Weapons_Assets_Remote
   m_Data:
     m_SerializedData: []
   m_GUID: 4912db2df3dc7a74aa836e5248ea30f9
@@ -51,4 +51,3 @@ MonoBehaviour:
     m_Schemas:
     - {fileID: 11400000, guid: c912a808fbe947e46bc534d0ca5ab8a6, type: 2}
     - {fileID: 11400000, guid: 99eee1c7f958008458203530a73275af, type: 2}
-    - {fileID: 11400000, guid: b21cccb977d42e744991fc6e0b50f063, type: 2}

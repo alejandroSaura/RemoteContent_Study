@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
-  m_Name: WeaponDefinitions_Remote_ContentUpdateGroupSchema
+  m_Script: {fileID: 11500000, guid: e53d8505b52d1b047b486687b4b09b26, type: 3}
+  m_Name: Weapons_Prefabs_Local_ContentTypeGroupSchema
   m_EditorClassIdentifier: 
-  m_Group: {fileID: 11400000, guid: 5200cd15604040840b6cbaddcf890c2f, type: 2}
-  m_StaticContent: 0
+  m_Group: {fileID: 11400000, guid: 77684f25e0e5c6e4da9a4ff796434697, type: 2}
+  contentType: 0
