@@ -21,14 +21,6 @@ MonoBehaviour:
     m_Address: Bow_Medium_Prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: d683417b022dca543a2e2fb8c0c11908
-    m_Address: Bow_Epic_Prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: eb9de1f4d4eb0974587915740c2394ba
-    m_Address: Mace1H_Basic_Prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: a71d1f9b3c3dfdf4f8190625852fd277
     m_Address: Shield_Basic_Prefab
     m_ReadOnly: 0
