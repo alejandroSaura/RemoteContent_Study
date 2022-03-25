@@ -10,21 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Shaders
+  m_Name: Weapons_Prefabs_Remote
   m_EditorClassIdentifier: 
-  m_GroupName: Shaders
+  m_GroupName: Weapons_Prefabs_Remote
   m_Data:
     m_SerializedData: []
-  m_GUID: 0d30dbe6dda15f841af6b088e50cda2e
+  m_GUID: a089d735fbb0263429edad3231ce547c
   m_SerializeEntries:
-  - m_GUID: 3cc082b3bcc48654fb00c60dab000cc2
-    m_Address: CustomStandardShader
+  - m_GUID: 7430d4cc5972f7645b8b1252559be75f
+    m_Address: Bow_Medium_Prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a71d1f9b3c3dfdf4f8190625852fd277
+    m_Address: Shield_Basic_Prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 42a82217ceccbdd41860460d99878a4d, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: d2a7236e7918e1a4197460aef703df6e, type: 2}
-    - {fileID: 11400000, guid: 90dfe74e6d7609b4ab8cf01e2b266811, type: 2}
-    - {fileID: 11400000, guid: 524796a8da6511c44b86ba824b679a88, type: 2}
+    - {fileID: 11400000, guid: 1cbb04eb5d18c9d46a3450b7037da635, type: 2}
+    - {fileID: 11400000, guid: ad09896593f88ef4fb5d8e14b38b9d42, type: 2}
+    - {fileID: 11400000, guid: 8fcead10874857e489c3bc92c2f79135, type: 2}

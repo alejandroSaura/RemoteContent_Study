@@ -10,21 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Shaders
+  m_Name: Weapons_Definitions_Local
   m_EditorClassIdentifier: 
-  m_GroupName: Shaders
+  m_GroupName: Weapons_Definitions_Local
   m_Data:
     m_SerializedData: []
-  m_GUID: 0d30dbe6dda15f841af6b088e50cda2e
+  m_GUID: 98d9b91f3e677054e82c5689d1d61148
   m_SerializeEntries:
-  - m_GUID: 3cc082b3bcc48654fb00c60dab000cc2
-    m_Address: CustomStandardShader
+  - m_GUID: 3b6b246ea1aa5cb45b25bf5d2c50f76b
+    m_Address: Bow_Basic_Def
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - WeaponDefinitions
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 42a82217ceccbdd41860460d99878a4d, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: d2a7236e7918e1a4197460aef703df6e, type: 2}
-    - {fileID: 11400000, guid: 90dfe74e6d7609b4ab8cf01e2b266811, type: 2}
-    - {fileID: 11400000, guid: 524796a8da6511c44b86ba824b679a88, type: 2}
+    - {fileID: 11400000, guid: 4519f6d1849fe4a458dd95d954d132f7, type: 2}
+    - {fileID: 11400000, guid: b6f6d762f41da4b47be0b21917b5d4ec, type: 2}
+    - {fileID: 11400000, guid: 060812cb68cced348b0f53dde203de15, type: 2}

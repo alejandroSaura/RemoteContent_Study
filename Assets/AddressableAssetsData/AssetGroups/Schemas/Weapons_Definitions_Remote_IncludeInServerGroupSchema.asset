@@ -9,14 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6767f6e6b1b2cbf44b50c06c80c40dc2, type: 3}
-  m_Name: Shield_Basic_Def
+  m_Script: {fileID: 11500000, guid: 524a10476392cd04e98cb9f7774b425f, type: 3}
+  m_Name: Weapons_Definitions_Remote_IncludeInServerGroupSchema
   m_EditorClassIdentifier: 
-  prefab:
-    m_AssetGUID: a71d1f9b3c3dfdf4f8190625852fd277
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  goldPrice: 100
-  gemsPrice: 10
-  minLevel: 2
+  m_Group: {fileID: 11400000, guid: 5200cd15604040840b6cbaddcf890c2f, type: 2}
+  includeInServer: 1

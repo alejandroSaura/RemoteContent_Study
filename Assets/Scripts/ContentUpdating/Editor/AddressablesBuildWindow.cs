@@ -20,6 +20,11 @@ namespace ContentUpdating
             REMOTE
         }
 
+        static string m_deploymentEnvironment = "Dev";
+
+        static string m_localCDNProfileName = "LocalCDN";
+        static string m_remoteCDNProfileName = "RemoteCDN";
+
         [MenuItem("Tools/Addressables Build")]
         public static void ShowWindow()
         {
@@ -28,37 +33,34 @@ namespace ContentUpdating
 
         void OnGUI()
         {
-            if (GUILayout.Button("Build local groups only"))
+            if (GUILayout.Button("Build local content"))
             {
                 BuildLocalGroupsOnly();
             }
 
-            if (GUILayout.Button("Build remote main content"))
+            if (GUILayout.Button("Build remote content (Local CDN)"))
             {
-                BuildRemoteMainContent(new Version(Application.version));
+                BuildRemoteContent(m_localCDNProfileName);
             }
 
-            if (GUILayout.Button("Build remote secondary content"))
+            if (GUILayout.Button("Build remote content (Remote CDN)"))
             {
-                BuildRemoteSecondaryContent(new Version(Application.version));
+                BuildRemoteContent(m_remoteCDNProfileName);
             }
 
-            if (GUILayout.Button("Build all groups forced as local"))
+            if (GUILayout.Button("Build all groups forced as local (for local debug builds)"))
             {
-                //BuildMainContent();
+                BuildAllGroupsForcedAslocal();
             }
 
-            if (GUILayout.Button("Build server flagged groups forced as local"))
+            if (GUILayout.Button("Build server flagged groups forced as local (for server builds)"))
             {
-                //BuildMainContent();
+                BuildServerGroups();
             }
         }
 
         public async static void BuildLocalGroupsOnly()
         {
-            BuildVars.DeploymentEnvironment = "Dev";
-            BuildVars.Platform = PlatformMappingService.GetPlatform().ToString();
-
             bool setProfileSuccess = SetProfile("Default");
             if (!setProfileSuccess)
             {
@@ -73,21 +75,47 @@ namespace ContentUpdating
 
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
             settings.BuildRemoteCatalog = false;
+            StripMaterialsAndMeshesFromPrefabs();
             Build();
             settings.BuildRemoteCatalog = true;
 
+            RestoreMaterialsAndMeshesFromPrefabs();
             RestoreGroupsIncludedState(groupsIncludedState);
+            AssetDatabase.Refresh();
+        }        
+
+        private void BuildAllGroupsForcedAslocal()
+        {           
+            bool setProfileSuccess = SetProfile("Default");
+            if (!setProfileSuccess)
+            {
+                return;
+            }
+
+            Dictionary<AddressableAssetGroup, bool> groupsIncludedState = SaveGroupsIncludedState();           
+
+            GroupFilter groupFilter = new GroupFilter() {  };
+            List<AddressableAssetGroup> groupsToBuild = GetFilteredGroups(groupFilter);
+            SetGroupsIncludedState(groupsToBuild);
+
+            Dictionary<AddressableAssetGroup, GroupRemoteState> groupsRemoteState = SaveGroupsRemoteState();
+            ForceLocalBuildPath(groupsToBuild);
+
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            settings.BuildRemoteCatalog = false;
+            StripMaterialsAndMeshesFromPrefabs();
+            Build();
+            settings.BuildRemoteCatalog = true;
+
+            RestoreMaterialsAndMeshesFromPrefabs();
+            RestoreGroupsIncludedState(groupsIncludedState);
+            RestoreGroupsRemoteState(groupsRemoteState);
+            AssetDatabase.Refresh();
         }
 
-        public async static void BuildRemoteMainContent(Version version)
+        private void BuildServerGroups()
         {
-            SaveCurrentAddressablesLibraryFolder();
-
-            BuildVars.DeploymentEnvironment = "Dev";
-            BuildVars.ContentType = "main";
-            BuildVars.Platform = PlatformMappingService.GetPlatform().ToString();
-
-            bool setProfileSuccess = SetProfile("MainContent");
+            bool setProfileSuccess = SetProfile("Default");
             if (!setProfileSuccess)
             {
                 return;
@@ -95,7 +123,41 @@ namespace ContentUpdating
 
             Dictionary<AddressableAssetGroup, bool> groupsIncludedState = SaveGroupsIncludedState();
 
-            GroupFilter groupFilter = new GroupFilter() { buildPath = AddressableAssetSettings.kRemoteBuildPath, contentType = ContentTypeGroupSchema.ContentType.Main };
+            GroupFilter groupFilter = new GroupFilter() { includeInServer = true };
+            List<AddressableAssetGroup> groupsToBuild = GetFilteredGroups(groupFilter);
+            SetGroupsIncludedState(groupsToBuild);
+
+            Dictionary<AddressableAssetGroup, GroupRemoteState> groupsRemoteState = SaveGroupsRemoteState();
+            ForceLocalBuildPath(groupsToBuild);
+
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            settings.BuildRemoteCatalog = false;
+            StripMaterialsAndMeshesFromPrefabs();
+            Build();
+            settings.BuildRemoteCatalog = true;
+
+            RestoreMaterialsAndMeshesFromPrefabs();
+            RestoreGroupsIncludedState(groupsIncludedState);
+            RestoreGroupsRemoteState(groupsRemoteState);
+            AssetDatabase.Refresh();
+        }
+
+        public async static void BuildRemoteContent(string profileName)
+        {
+            SaveCurrentAddressablesLibraryFolder();
+
+            BuildVars.DeploymentEnvironment = m_deploymentEnvironment;
+            BuildVars.Platform = PlatformMappingService.GetPlatform().ToString();
+
+            bool setProfileSuccess = SetProfile(profileName);
+            if (!setProfileSuccess)
+            {
+                return;
+            }
+
+            Dictionary<AddressableAssetGroup, bool> groupsIncludedState = SaveGroupsIncludedState();
+
+            GroupFilter groupFilter = new GroupFilter() { buildPath = AddressableAssetSettings.kRemoteBuildPath };
             List<AddressableAssetGroup> groupsToBuild = GetFilteredGroups(groupFilter);
             SetGroupsIncludedState(groupsToBuild);
 
@@ -104,6 +166,8 @@ namespace ContentUpdating
             StripMaterialsAndMeshesFromPrefabs();
             await Task.Yield();
 
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            settings.BuildRemoteCatalog = true;
             Build();
 
             RestoreMaterialsAndMeshesFromPrefabs();
@@ -112,40 +176,6 @@ namespace ContentUpdating
             AssetDatabase.Refresh();
 
             DeleteAddressablesLibraryFolder();
-            UnityEngine.Caching.ClearCache();
-
-            RestorePreviousAddressablesLibraryFolder();
-        }
-
-        public async static void BuildRemoteSecondaryContent(Version version)
-        {
-            SaveCurrentAddressablesLibraryFolder();
-
-            BuildVars.DeploymentEnvironment = "Dev";
-            BuildVars.ContentType = "secondary";
-            BuildVars.Platform = PlatformMappingService.GetPlatform().ToString();
-
-            bool setProfileSuccess = SetProfile("SecondaryContent");
-            if (!setProfileSuccess)
-            {
-                return;
-            }
-
-            Dictionary<AddressableAssetGroup, bool> groupsIncludedState = SaveGroupsIncludedState();
-
-            GroupFilter groupFilter = new GroupFilter() { buildPath = AddressableAssetSettings.kRemoteBuildPath, contentType = ContentTypeGroupSchema.ContentType.Secondary };
-            List<AddressableAssetGroup> groupsToBuild = GetFilteredGroups(groupFilter);
-            SetGroupsIncludedState(groupsToBuild);
-
-            DeleteRemoteTargetFolder();
-
-            Build();
-
-            RestoreGroupsIncludedState(groupsIncludedState);
-            AssetDatabase.Refresh();
-
-            DeleteAddressablesLibraryFolder();
-            UnityEngine.Caching.ClearCache();
 
             RestorePreviousAddressablesLibraryFolder();
         }
@@ -228,6 +258,55 @@ namespace ContentUpdating
             }
         }
 
+        class GroupRemoteState
+        {
+            public string buildPath;
+            public string loadPath;
+        }
+
+        private static Dictionary<AddressableAssetGroup, GroupRemoteState> SaveGroupsRemoteState()
+        {
+            Dictionary<AddressableAssetGroup, GroupRemoteState> groupsRemoteState = new Dictionary<AddressableAssetGroup, GroupRemoteState>();
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            foreach (AddressableAssetGroup group in settings.groups)
+            {
+                BundledAssetGroupSchema bundledAssetGroupSchema = group.GetSchema<BundledAssetGroupSchema>();
+                if (bundledAssetGroupSchema != null)
+                {
+                    groupsRemoteState.Add(group, new GroupRemoteState() { buildPath = bundledAssetGroupSchema.BuildPath.GetName(settings), loadPath = bundledAssetGroupSchema.LoadPath.GetName(settings) });
+                }
+            }
+            return groupsRemoteState;
+        }
+
+        private static void RestoreGroupsRemoteState(Dictionary<AddressableAssetGroup, GroupRemoteState> groupsRemoteState)
+        {
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            foreach (AddressableAssetGroup group in settings.groups)
+            {
+                BundledAssetGroupSchema bundledAssetGroupSchema = group.GetSchema<BundledAssetGroupSchema>();
+                if (bundledAssetGroupSchema != null)
+                {
+                    bundledAssetGroupSchema.BuildPath.SetVariableByName(settings, groupsRemoteState[group].buildPath);
+                    bundledAssetGroupSchema.LoadPath.SetVariableByName(settings, groupsRemoteState[group].loadPath);
+                }
+            }
+        }
+
+        private static void ForceLocalBuildPath(List<AddressableAssetGroup> groupsToForce)
+        {
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            foreach (AddressableAssetGroup group in groupsToForce)
+            {
+                BundledAssetGroupSchema bundledAssetGroupSchema = group.GetSchema<BundledAssetGroupSchema>();
+                if (bundledAssetGroupSchema != null)
+                {
+                    bundledAssetGroupSchema.BuildPath.SetVariableByName(settings, AddressableAssetSettings.kLocalBuildPath);
+                    bundledAssetGroupSchema.LoadPath.SetVariableByName(settings, AddressableAssetSettings.kLocalLoadPath);
+                }
+            }
+        }
+
         private static Dictionary<AddressableAssetGroup, bool> SaveGroupsIncludedState()
         {
             Dictionary<AddressableAssetGroup, bool> groupsIncludedState = new Dictionary<AddressableAssetGroup, bool>();
@@ -278,7 +357,6 @@ namespace ContentUpdating
         class GroupFilter
         {
             public string buildPath = "";
-            public ContentTypeGroupSchema.ContentType? contentType = null;
             public bool? includeInServer = null;
         }
 
@@ -289,7 +367,6 @@ namespace ContentUpdating
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
             foreach (AddressableAssetGroup group in settings.groups)
             {
-                ContentTypeGroupSchema contentTypeGroupSchema = group.GetSchema<ContentTypeGroupSchema>();
                 BundledAssetGroupSchema bundledAssetGroupSchema = group.GetSchema<BundledAssetGroupSchema>();
                 IncludeInServerGroupSchema includeInServerGroupSchema = group.GetSchema<IncludeInServerGroupSchema>();
 
@@ -306,16 +383,9 @@ namespace ContentUpdating
                         continue;
                     }
                 }
-                if (filter.contentType != null)
+                if (filter.includeInServer != null) // Only exclude when the group has the component and is different than our filter's value
                 {
-                    if (contentTypeGroupSchema == null || contentTypeGroupSchema.contentType != filter.contentType.Value)
-                    {
-                        continue;
-                    }
-                }
-                if (filter.includeInServer != null)
-                {
-                    if (includeInServerGroupSchema == null || includeInServerGroupSchema.includeInServer != filter.includeInServer.Value)
+                    if (includeInServerGroupSchema != null && includeInServerGroupSchema.includeInServer != filter.includeInServer.Value)
                     {
                         continue;
                     }

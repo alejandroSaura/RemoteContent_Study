@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Shaders
+  m_Name: Weapons_Prefabs_Local
   m_EditorClassIdentifier: 
-  m_GroupName: Shaders
+  m_GroupName: Weapons_Prefabs_Local
   m_Data:
     m_SerializedData: []
-  m_GUID: 0d30dbe6dda15f841af6b088e50cda2e
+  m_GUID: c551a2128f8db6b42b18c6ffe2d931c8
   m_SerializeEntries:
-  - m_GUID: 3cc082b3bcc48654fb00c60dab000cc2
-    m_Address: CustomStandardShader
+  - m_GUID: f00ccada7f0331a43859fb2ed3be739f
+    m_Address: Bow_Basic_Prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 42a82217ceccbdd41860460d99878a4d, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: d2a7236e7918e1a4197460aef703df6e, type: 2}
-    - {fileID: 11400000, guid: 90dfe74e6d7609b4ab8cf01e2b266811, type: 2}
-    - {fileID: 11400000, guid: 524796a8da6511c44b86ba824b679a88, type: 2}
+    - {fileID: 11400000, guid: 09f9102d72c57ce4d901abea69dd0013, type: 2}
+    - {fileID: 11400000, guid: 1380ac799d2c8884a8d312784ae18c2a, type: 2}
+    - {fileID: 11400000, guid: 2447aa1630d7e4e45949721d74f030f2, type: 2}

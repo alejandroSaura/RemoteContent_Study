@@ -37,7 +37,7 @@ MonoBehaviour:
   m_RemoteCatalogLoadPath:
     m_Id: 6070c3abeb9c70d4f8219208a928f3a9
   m_ContentStateBuildPath: 
-  m_overridePlayerVersion: remote_[ContentUpdating.BuildVars.DeploymentEnvironment]_[ContentUpdating.BuildVars.ContentType]
+  m_overridePlayerVersion: remote_[ContentUpdating.BuildVars.DeploymentEnvironment]
   m_GroupAssets:
   - {fileID: 11400000, guid: 7901d9ceae1c2f041b6f645f6099b705, type: 2}
   - {fileID: 11400000, guid: 512251c1a553e434eb09f85d1945f6e5, type: 2}
@@ -71,7 +71,7 @@ MonoBehaviour:
         m_Value: http://localhost:8080/Default
     - m_InheritedParent: 
       m_Id: f8b79874030584a4198f07324ce36451
-      m_ProfileName: MainContent
+      m_ProfileName: LocalCDN
       m_Values:
       - m_Id: 4df11b68cfc38fa4c8612deebe54ae3f
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
@@ -80,12 +80,12 @@ MonoBehaviour:
       - m_Id: 4d4b4caf5ff227641910e709c641addf
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: e83b649bd59924742bc765a8f1b8ee9b
-        m_Value: RemoteBundles/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]/Main
+        m_Value: RemoteBundles/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]
       - m_Id: 6070c3abeb9c70d4f8219208a928f3a9
-        m_Value: http://localhost:8080/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]/Main
+        m_Value: http://localhost:8080/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]
     - m_InheritedParent: 
-      m_Id: 7e8a8b7160f14d84db917277cf3628b7
-      m_ProfileName: SecondaryContent
+      m_Id: c1168ab18c9c3394c9f31be6df7878b3
+      m_ProfileName: RemoteCDN
       m_Values:
       - m_Id: 4df11b68cfc38fa4c8612deebe54ae3f
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
@@ -94,9 +94,9 @@ MonoBehaviour:
       - m_Id: 4d4b4caf5ff227641910e709c641addf
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: e83b649bd59924742bc765a8f1b8ee9b
-        m_Value: RemoteBundles/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]/Secondary
+        m_Value: RemoteBundles/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]
       - m_Id: 6070c3abeb9c70d4f8219208a928f3a9
-        m_Value: http://localhost:8080/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]/Secondary
+        m_Value: http://localhost:8080/[ContentUpdating.BuildVars.DeploymentEnvironment]/[ContentUpdating.BuildVars.Platform]
     m_ProfileEntryNames:
     - m_Id: 4df11b68cfc38fa4c8612deebe54ae3f
       m_Name: BuildTarget

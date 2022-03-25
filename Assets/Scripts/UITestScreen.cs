@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UITestScreen : MonoBehaviour
 {
+    [SerializeField] Button m_loadRemoteCatalogButton;
     [SerializeField] Button m_checkForUpdateButton;
     [SerializeField] Button m_downloadButton;
     [SerializeField] Button m_clearCacheButton;
@@ -18,6 +19,7 @@ public class UITestScreen : MonoBehaviour
 
     void Start()
     {
+        m_loadRemoteCatalogButton.onClick.AddListener(LoadRemoteCatalog);
         m_checkForUpdateButton.onClick.AddListener(CheckForUpdate);
         m_downloadButton.onClick.AddListener(Download);
         m_clearCacheButton.onClick.AddListener(DeleteAllCachedData);
@@ -28,6 +30,7 @@ public class UITestScreen : MonoBehaviour
 
     void OnDestroy()
     {
+        m_loadRemoteCatalogButton.onClick.RemoveListener(LoadRemoteCatalog);
         m_checkForUpdateButton.onClick.RemoveListener(CheckForUpdate);
         m_downloadButton.onClick.RemoveListener(Download);
         m_clearCacheButton.onClick.RemoveListener(DeleteAllCachedData);
@@ -42,6 +45,11 @@ public class UITestScreen : MonoBehaviour
     void DeleteAllCachedData()
     {
         m_contentUpdateBehaviour.DeleteAllContentCachedData();
+    }
+
+    async void LoadRemoteCatalog()
+    {
+        await m_contentUpdateBehaviour.LoadRemoteContentCatalog();
     }
 
     async void CheckForUpdate()

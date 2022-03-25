@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
+using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using static UnityEngine.AddressableAssets.Addressables;
@@ -14,29 +15,44 @@ namespace ContentUpdating
 {
     public class ContentUpdater
     {
-        string m_mainRemoteContentCatalogAddress = "http://localhost:8080/Dev/Windows/Main/catalog_remote_Dev_main.json";
-        string m_secondaryRemoteContentCatalogAddress = "http://localhost:8080/Dev/Windows/Secondary/catalog_remote_Dev_secondary.json";
+        string kCacheDataFolder = Application.persistentDataPath + "/com.unity.addressables";
 
-        bool m_remoteCatalogsLoaded;
+        string m_remoteContentCatalogAddress = "http://localhost:8080/Dev/Windows/catalog_remote_Dev.json";
+
+        bool m_remoteCatalogLoaded;
 
         AsyncOperationHandle m_DownloadDependencies_Op;
 
-        public ContentUpdater(string mainRemoteContentCatalogAddress, string secondaryRemoteContentCatalogAddress)
+        public ContentUpdater(string remoteContentCatalogAddress)
         {
-            m_mainRemoteContentCatalogAddress = mainRemoteContentCatalogAddress;
-            m_secondaryRemoteContentCatalogAddress = secondaryRemoteContentCatalogAddress;
-            m_remoteCatalogsLoaded = false;
+            m_remoteContentCatalogAddress = remoteContentCatalogAddress;
+            m_remoteCatalogLoaded = false;
+        }
+
+        public async Task LoadRemoteContentCatalog()
+        {
+            await LoadRemoteContentCatalog(m_remoteContentCatalogAddress);
+            m_remoteCatalogLoaded = true;
+        }
+
+        async Task LoadRemoteContentCatalog(string catalogAddress)
+        {
+            AsyncOperationHandle contentCatalogLoad_op = Addressables.LoadContentCatalogAsync(catalogAddress); // This doesn't cache the catalog for some obscure and hidden reason
+            await contentCatalogLoad_op.Task;
+            Debug.Assert(contentCatalogLoad_op.Status == AsyncOperationStatus.Succeeded);
+
+            Addressables.Release(contentCatalogLoad_op);
         }
 
         public async Task<ContentUpdateInfo> CheckRemoteContentUpdate()
         {
             try
             {
-                if (!m_remoteCatalogsLoaded)
+                if (!m_remoteCatalogLoaded)
                 {
-                    await LoadRemoteContentCatalogs();
+                    throw new Exception("Load the remote catalog before checking for updates");
                 }
-                await UpdateRemoteContentCatalogs();
+                await UpdateRemoteContentCatalog();
                 ContentUpdateInfo contentUpdateInfo = await GetContentUpdateInfo();
                 return contentUpdateInfo;
             }
@@ -91,28 +107,13 @@ namespace ContentUpdating
             return m_DownloadDependencies_Op.PercentComplete;
         }
 
-        async Task LoadRemoteContentCatalogs()
+        async Task UpdateRemoteContentCatalog()
         {
-            await LoadRemoteContentCatalog(m_secondaryRemoteContentCatalogAddress);
-            await LoadRemoteContentCatalog(m_mainRemoteContentCatalogAddress);
-            m_remoteCatalogsLoaded = true;
-        }
-
-        async Task LoadRemoteContentCatalog(string catalogAddress)
-        {
-            AsyncOperationHandle contentCatalogLoad_op = Addressables.LoadContentCatalogAsync(catalogAddress);
-            await contentCatalogLoad_op.Task;
-            Debug.Assert(contentCatalogLoad_op.Status == AsyncOperationStatus.Succeeded);
-            Addressables.Release(contentCatalogLoad_op);
-        }
-
-        async Task UpdateRemoteContentCatalogs()
-        {  
             Debug.Log($"Updating Remote Catalogs...");
 
             List<string> catalogsToUpdate = new List<string>();
 
-            AsyncOperationHandle<List<string>> CheckForCatalogUpdates_Op = Addressables.CheckForCatalogUpdates(false);
+            AsyncOperationHandle<List<string>> CheckForCatalogUpdates_Op = Addressables.CheckForCatalogUpdates(false); // This caches the catalog
             await CheckForCatalogUpdates_Op.Task;
 
             if (!CheckForCatalogUpdates_Op.IsValid())
@@ -231,21 +232,19 @@ namespace ContentUpdating
 
         void DeleteCacheFolder()
         {
-            string catalogPath = Application.persistentDataPath + "/com.unity.addressables";
-
-            if (!Directory.Exists(catalogPath))
+            if (!Directory.Exists(kCacheDataFolder))
             {
                 return;
             }
 
-            string[] files = Directory.GetFiles(catalogPath);
+            string[] files = Directory.GetFiles(kCacheDataFolder);
             foreach (string file in files)
             {
                 File.SetAttributes(file, FileAttributes.Normal);
                 File.Delete(file);
             }
 
-            Directory.Delete(catalogPath, false);
+            Directory.Delete(kCacheDataFolder, false);
         }
     }
 }
