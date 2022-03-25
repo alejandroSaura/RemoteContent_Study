@@ -40,12 +40,12 @@ namespace ContentUpdating
 
             if (GUILayout.Button("Build remote content (Local CDN)"))
             {
-                BuildRemoteMainContent(m_localCDNProfileName);
+                BuildRemoteContent(m_localCDNProfileName);
             }
 
             if (GUILayout.Button("Build remote content (Remote CDN)"))
             {
-                BuildRemoteMainContent(m_remoteCDNProfileName);
+                BuildRemoteContent(m_remoteCDNProfileName);
             }
 
             if (GUILayout.Button("Build all groups forced as local (for local debug builds)"))
@@ -61,9 +61,6 @@ namespace ContentUpdating
 
         public async static void BuildLocalGroupsOnly()
         {
-            BuildVars.DeploymentEnvironment = m_deploymentEnvironment;
-            BuildVars.Platform = PlatformMappingService.GetPlatform().ToString();
-
             bool setProfileSuccess = SetProfile("Default");
             if (!setProfileSuccess)
             {
@@ -78,13 +75,74 @@ namespace ContentUpdating
 
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
             settings.BuildRemoteCatalog = false;
+            StripMaterialsAndMeshesFromPrefabs();
             Build();
             settings.BuildRemoteCatalog = true;
 
+            RestoreMaterialsAndMeshesFromPrefabs();
             RestoreGroupsIncludedState(groupsIncludedState);
+            AssetDatabase.Refresh();
+        }        
+
+        private void BuildAllGroupsForcedAslocal()
+        {           
+            bool setProfileSuccess = SetProfile("Default");
+            if (!setProfileSuccess)
+            {
+                return;
+            }
+
+            Dictionary<AddressableAssetGroup, bool> groupsIncludedState = SaveGroupsIncludedState();           
+
+            GroupFilter groupFilter = new GroupFilter() {  };
+            List<AddressableAssetGroup> groupsToBuild = GetFilteredGroups(groupFilter);
+            SetGroupsIncludedState(groupsToBuild);
+
+            Dictionary<AddressableAssetGroup, GroupRemoteState> groupsRemoteState = SaveGroupsRemoteState();
+            ForceLocalBuildPath(groupsToBuild);
+
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            settings.BuildRemoteCatalog = false;
+            StripMaterialsAndMeshesFromPrefabs();
+            Build();
+            settings.BuildRemoteCatalog = true;
+
+            RestoreMaterialsAndMeshesFromPrefabs();
+            RestoreGroupsIncludedState(groupsIncludedState);
+            RestoreGroupsRemoteState(groupsRemoteState);
+            AssetDatabase.Refresh();
         }
 
-        public async static void BuildRemoteMainContent(string profileName)
+        private void BuildServerGroups()
+        {
+            bool setProfileSuccess = SetProfile("Default");
+            if (!setProfileSuccess)
+            {
+                return;
+            }
+
+            Dictionary<AddressableAssetGroup, bool> groupsIncludedState = SaveGroupsIncludedState();
+
+            GroupFilter groupFilter = new GroupFilter() { includeInServer = true };
+            List<AddressableAssetGroup> groupsToBuild = GetFilteredGroups(groupFilter);
+            SetGroupsIncludedState(groupsToBuild);
+
+            Dictionary<AddressableAssetGroup, GroupRemoteState> groupsRemoteState = SaveGroupsRemoteState();
+            ForceLocalBuildPath(groupsToBuild);
+
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            settings.BuildRemoteCatalog = false;
+            StripMaterialsAndMeshesFromPrefabs();
+            Build();
+            settings.BuildRemoteCatalog = true;
+
+            RestoreMaterialsAndMeshesFromPrefabs();
+            RestoreGroupsIncludedState(groupsIncludedState);
+            RestoreGroupsRemoteState(groupsRemoteState);
+            AssetDatabase.Refresh();
+        }
+
+        public async static void BuildRemoteContent(string profileName)
         {
             SaveCurrentAddressablesLibraryFolder();
 
@@ -118,19 +176,8 @@ namespace ContentUpdating
             AssetDatabase.Refresh();
 
             DeleteAddressablesLibraryFolder();
-            UnityEngine.Caching.ClearCache();
 
             RestorePreviousAddressablesLibraryFolder();
-        }
-
-        private void BuildServerGroups()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void BuildAllGroupsForcedAslocal()
-        {
-            throw new NotImplementedException();
         }
 
         static void Build()
@@ -211,6 +258,55 @@ namespace ContentUpdating
             }
         }
 
+        class GroupRemoteState
+        {
+            public string buildPath;
+            public string loadPath;
+        }
+
+        private static Dictionary<AddressableAssetGroup, GroupRemoteState> SaveGroupsRemoteState()
+        {
+            Dictionary<AddressableAssetGroup, GroupRemoteState> groupsRemoteState = new Dictionary<AddressableAssetGroup, GroupRemoteState>();
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            foreach (AddressableAssetGroup group in settings.groups)
+            {
+                BundledAssetGroupSchema bundledAssetGroupSchema = group.GetSchema<BundledAssetGroupSchema>();
+                if (bundledAssetGroupSchema != null)
+                {
+                    groupsRemoteState.Add(group, new GroupRemoteState() { buildPath = bundledAssetGroupSchema.BuildPath.GetName(settings), loadPath = bundledAssetGroupSchema.LoadPath.GetName(settings) });
+                }
+            }
+            return groupsRemoteState;
+        }
+
+        private static void RestoreGroupsRemoteState(Dictionary<AddressableAssetGroup, GroupRemoteState> groupsRemoteState)
+        {
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            foreach (AddressableAssetGroup group in settings.groups)
+            {
+                BundledAssetGroupSchema bundledAssetGroupSchema = group.GetSchema<BundledAssetGroupSchema>();
+                if (bundledAssetGroupSchema != null)
+                {
+                    bundledAssetGroupSchema.BuildPath.SetVariableByName(settings, groupsRemoteState[group].buildPath);
+                    bundledAssetGroupSchema.LoadPath.SetVariableByName(settings, groupsRemoteState[group].loadPath);
+                }
+            }
+        }
+
+        private static void ForceLocalBuildPath(List<AddressableAssetGroup> groupsToForce)
+        {
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            foreach (AddressableAssetGroup group in groupsToForce)
+            {
+                BundledAssetGroupSchema bundledAssetGroupSchema = group.GetSchema<BundledAssetGroupSchema>();
+                if (bundledAssetGroupSchema != null)
+                {
+                    bundledAssetGroupSchema.BuildPath.SetVariableByName(settings, AddressableAssetSettings.kLocalBuildPath);
+                    bundledAssetGroupSchema.LoadPath.SetVariableByName(settings, AddressableAssetSettings.kLocalLoadPath);
+                }
+            }
+        }
+
         private static Dictionary<AddressableAssetGroup, bool> SaveGroupsIncludedState()
         {
             Dictionary<AddressableAssetGroup, bool> groupsIncludedState = new Dictionary<AddressableAssetGroup, bool>();
@@ -287,9 +383,9 @@ namespace ContentUpdating
                         continue;
                     }
                 }
-                if (filter.includeInServer != null)
+                if (filter.includeInServer != null) // Only exclude when the group has the component and is different than our filter's value
                 {
-                    if (includeInServerGroupSchema == null || includeInServerGroupSchema.includeInServer != filter.includeInServer.Value)
+                    if (includeInServerGroupSchema != null && includeInServerGroupSchema.includeInServer != filter.includeInServer.Value)
                     {
                         continue;
                     }
